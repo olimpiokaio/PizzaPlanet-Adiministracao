@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>cad.Categoria</title>
+	</h:head>
+	<h:body>
+		<p:breadCrumb>
+			<p:menuitem value="home" url="home.xhtml"/>
+		    <p:menuitem value="Pizzas" url="cadPizza.xhtml" />
+		    <p:menuitem value="Bebidas" url="cadBebida.xhtml" />
+		    <p:menuitem value="Categorias" url="cadCategoria.xhtml" />
+		    <p:menuitem value="Marcas" url="cadMarca.xhtml" />
+		    <p:menuitem value="Tipos" url="cadTipo.xhtml" />
+		    <p:menuitem value="Sair" url="#"/>
+		</p:breadCrumb>
+	
+		<p:panel>
+			<h1>Categoria</h1>
+		</p:panel>
+		
+		<div>
+			<p:growl id="alerta" life="2000"/>
+		</div>
+		
+		<h:form id="formCategoria">
+			<p:fieldset legend="Novo cadastro">
+				<p:panelGrid class="ui-noborder">
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Nome" for="nome"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="nome" value="#{categoriaBean.categoria.nome}"
+								required="true" requiredMessage="Nome obrigatório!"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column></p:column>
+						<p:column>
+							<p:commandButton value="gravar" action="#{categoriaBean.gravar}"
+								process="@this @form" update="@form :formLista"/>				
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:fieldset>
+		</h:form>
+		
+		<h:form id="formLista">
+			<p:dataTable value="#{categoriaBean.categoriaLista}" var="categoria" emptyMessage="Sem resultados.">
+				<p:column headerText="Id" sortBy="#{categoria.id}" filterBy="#{categoria.id}">
+					<p:outputLabel value="#{categoria.id}" />
+				</p:column>
+				
+				<p:column headerText="Nome" sortBy="#{categoria.nome}" filterBy="#{categoria.nome}">
+					<p:outputLabel value="#{categoria.nome}" />
+				</p:column>
+				
+				<p:column headerText="Editar" style="text-align: center">
+					<p:commandButton value="Editar" action="#{categoriaBean.editar(categoria.id)}" 
+							update=":formCategoria">
+					</p:commandButton>	
+				</p:column>
+				
+				<p:column headerText="Remover" style="text-align: center">
+					<p:commandButton value="Remover" action="#{categoriaBean.remover(categoria.id)}" 
+						icon="fa fa-fw fa-remove" update="@form" async="true">
+						<p:confirm header="confirmação" message="Os dados serão perdidos!"/>
+					</p:commandButton>
+					
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="text-align: center">
+						<p:commandButton value="confirmar" type="button" styleClass="ui-confirmdialog-yes" 
+				        	icon="fa fa-fw fa-check" style="text-align: center;background: green;color: #fff"/>
+				        <p:commandButton value="cancelar" type="button" styleClass="ui-confirmdialog-no" 
+				        	icon="fa fa-fw fa-times" style="text-align: center;background: red;color: #fff"/>
+					</p:confirmDialog>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</h:body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

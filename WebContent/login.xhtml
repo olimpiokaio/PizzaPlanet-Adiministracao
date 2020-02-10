@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+			
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Login</title>
+	</h:head>	
+	<h:body>
+	
+		<p:growl id="message" life="2000" />
+		<p:panel>
+			<h1>Login</h1>
+		</p:panel>
+	
+		<h:form id="formLogin">
+			<p:fieldset legend="Entrar">
+				<p:panelGrid class="ui-noborder">
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Email" for="email" />
+						</p:column>
+						<p:column>
+							<p:inputText id="email" value="#{loginBean.usuairo.email}" required="true" 
+								requiredMessage="email obrigatório!">
+								<f:attribute name="type" value="email" />
+								<f:passThroughAttribute name="placeholder" value="Email do autor" />
+								<f:validateRegex pattern=".+@.+" />
+								<f:ajax event="blur" render="msgEmail" />
+							</p:inputText>	
+						</p:column>
+						<p:column>
+							<p:message id="msgEmail" for="email"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Senha" for="senha"/>
+						</p:column>
+						<p:column>
+							<p:password id="senha" value="#{loginBean.usuairo.senha}" requiredMessage="Email obrigatório!"
+								required="true" />
+						</p:column>
+						<p:column>
+							<p:message id="msgSenha" for="senha" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column />
+						<p:column>
+							<p:commandButton value="Logar" action="#{loginBean.efetuaLogin}"/>
+						</p:column>	
+					</p:row>
+				</p:panelGrid>
+			</p:fieldset>
+		</h:form>
+	</h:body>
+</html>

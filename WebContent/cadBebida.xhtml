@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://xmlns.jcp.org/jsf/html"
+		xmlns:f="http://xmlns.jcp.org/jsf/core"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Cad.Bebida</title>
+	</h:head>
+	<h:body>
+		<p:breadCrumb>
+			<p:menuitem value="home" url="home.xhtml" />
+		    <p:menuitem value="Pizzas" url="cadPizza.xhtml" />
+		    <p:menuitem value="Bebidas" url="cadBebida.xhtml" />
+		    <p:menuitem value="Categorias" url="cadCategoria.xhtml" />
+		    <p:menuitem value="Marcas" url="cadMarca.xhtml" />
+		    <p:menuitem value="Tipos" url="cadTipo.xhtml" />
+		    <p:menuitem value="Sair" url="#"/>
+		</p:breadCrumb>
+		
+		<p:growl id="message" life="2000" />
+		
+		<p:panel>
+			<h1>Bebidas</h1>
+		</p:panel>
+		
+		<h:form id="formBebida">
+			<p:fieldset legend="Nova Bebida">
+				<p:panelGrid class="ui-noborder">
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Nome" for="nome" />
+						</p:column>
+						<p:column>
+							<p:inputText id="nome" value="#{bebidaBean.bebida.nome}" required="true" 
+								requiredMessage="Nome obrigatório!">
+								<f:ajax event="blur" render="msgNome message" />
+							</p:inputText>	
+						</p:column>
+						<p:column>
+							<p:message id="msgNome" for="nome"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Preço" for="preco"/>
+						</p:column>
+						<p:column>
+							<p:inputNumber id="preco" value="#{bebidaBean.bebida.preco}" required="true" 
+								symbol=" R$" symbolPosition="s" decimalSeparator="," thousandSeparator="."/>
+						</p:column>
+						<p:column>
+							<p:message id="msgPreco" for="preco" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Tipo" for="tipo"/>
+						</p:column>
+						<p:column>
+							<p:selectOneMenu id="tipo" value="#{bebidaBean.tipoId}" required="true" 
+								requiredMessage="Escolha um tipo de bebida">
+								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+								<f:selectItems value="#{bebidaBean.tipoLista}" var="tipo" 
+									itemValue="#{tipo.id}" itemLabel="#{tipo.caracteristica}"/>
+							</p:selectOneMenu>
+						</p:column>
+						<p:column>
+							<p:message id="msgTipo" for="tipo" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Marca" for="marca"/>
+						</p:column>
+						<p:column>
+							<p:selectOneMenu id="marca" value="#{bebidaBean.marcaId}" required="true" 
+								requiredMessage="Escolha uma marca">
+								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+								<f:selectItems value="#{bebidaBean.marcaLista}" var="marca" 
+									itemLabel="#{marca.nome}" itemValue="#{marca.id}"/>
+							</p:selectOneMenu>
+						</p:column>
+						<p:column>
+							<p:message id="msgMarca" for="marca" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Imagem:" />
+						</p:column>
+						
+						<p:column>
+							<p:fileUpload id="fileUpload"  mode="advanced" label="Imagem" auto="true"
+								sizeLimit="400000" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+								fileUploadListener="#{bebidaBean.upload}" update="foto"/>
+						</p:column>
+						
+						<p:column>
+							<h:graphicImage id="foto" value="#{bebidaBean.bebida.imagem}" height="150"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column />
+						<p:column>
+							<p:commandButton value="Gravar" action="#{bebidaBean.gravar}" process="@this @form"
+								update="@all" />
+						</p:column>	
+					</p:row>
+				</p:panelGrid>
+			</p:fieldset>
+		</h:form>
+		
+		<h:form id="formTabela">
+			<p:dataTable id="tabelaBebida" value="#{bebidaBean.bebidaLista}" var="bebida"
+				paginator="true" row="5" emptyMessage="Nada encontrado.">
+			
+				<p:column headerText="nome" sortBy="#{bebida.nome}" filterBy="#{bebida.nome}" filterMatchMode="startsWith">
+					<h:outputText value="#{bebida.nome}" />
+				</p:column>
+				
+				<p:column headerText="preco" sortBy="#{bebida.preco}">
+					<h:outputText value="#{bebida.preco}">
+						<f:convertNumber type="currency" pattern="R$ #0.00" locale="pt_BR" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="marca" sortBy="#{bebida.marca.nome}">
+					<h:outputText value="#{bebida.marca.nome}" />
+				</p:column>
+				
+				<p:column headerText="tipo">
+					<h:outputText value="#{bebida.tipo.caracteristica}" />
+				</p:column>
+				
+				<p:column headerText="editar" style="text-align: center">
+					<p:commandButton id="btnEditar" value="editar" action="#{bebidaBean.editar(bebida.id)}" 
+						update=":formBebida" immediate="true" icon="fa fa-fw fa-edit"/>
+				</p:column>
+				
+				<p:column headerText="remover" style="text-align: center">
+					<p:commandButton id="btnRemover" value="remover" action="#{bebidaBean.remover(bebida.id)}" 
+						update="@all" process="@this @form" async="true" icon="fa fa-fw fa-remove" immediate="true">
+						<p:confirm header="Confirmação" message="Os dados serão perdidos!"/>
+					</p:commandButton>
+					
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="text-align: center">
+						<p:commandButton value="confirmar" type="button" styleClass="ui-confirmdialog-yes"
+							icon="fa fa-fw fa-check" style="text-align: center;background: green;color: #fff"/>
+						<p:commandButton value="cancelar" type="button" styleClass="ui-confirmdialog-no" 
+							icon="fa fa-fw fa-times" style="text-align: center;background: red;color: #fff"/>	
+					</p:confirmDialog>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		
+	</h:body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

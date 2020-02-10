@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    <meta name="viewport" content="width=divice-width, initial-scale=1.0"/>
+	    <meta name="description" content="Omifood is a premium food delivery service with the mission to bring affordable and healty meals to as many people as possible." />
+	
+	 	<link rel="stylesheet" type="text/css" href="resources/vendedores/css/normalize.css"/>
+	    <link rel="stylesheet" type="text/css" href="resources/vendedores/css/grid.css"/>
+	    <link rel="stylesheet" type="text/css" href="resources/vendedores/css/ionicons.min.css"/>
+	    <link rel="stylesheet" type="text/css" href="resources/vendedores/css/animated.css"/>
+	    <link rel="stylesheet" type="text/css" href="resources/recursos/css/estilo.css"/>
+	    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,300italic" rel="stylesheet"/>
+	    <title>Planeta Pizza</title>
+	</h:head>
+	
+	<style type="text/css">
+		html,body {
+	    	/*background-image: linear-gradient(rgba(139,69,19,0.8), rgba(255,255,240,0)), url(resources/recursos/css/img/natal1.jpg);
+    		*/background-image: url("resources/recursos/css/img/natal1.jpg");
+    		background-size: 100%;
+    		background-attachment: fixed;
+	    	font-family: 'Poppins', sans-serif;
+	    	font-weight: 300;
+		    font-size: 20px;
+		    text-rendering: optimizeLegibility;
+		    overflow-x: hidden;
+	    }
+    	
+    	.sidnav {
+    		background: #fa9c55e5;
+    	}
+    	
+    	/* repeat */
+    	.logo {
+        width: 5%
+	    }
+	 
+	    .detail {
+	        width: 95%;
+	        padding-left: 25px;
+	    }
+	 
+	    .detail td {
+	        font-size: 24px;
+	    }
+	    
+	    .element.style {
+	    	background: #ABEBC6;
+	    }
+		
+		/*carrosel*/
+	    .ui-carousel {
+	        margin-bottom: 20px;
+	    }
+	    
+	    .value {
+	        font-weight: bold;
+	    }
+	    
+	    .ui-widget-header {
+			background: none;
+			border: none;
+			font-weight: normal;
+		}
+		
+		.ui-widget-content {
+			color: #518546;
+		}
+		
+		 /* menu footer */
+	    .ui-g {
+	    	width:100%
+	    }
+	    
+	    .ui-g div {
+		    text-align: center;
+		}
+		
+		.ui-widget-content .descricao {
+			background: #ffff;
+		}
+	</style>
+	<h:body>
+		<p:growl id="messages" life="2000"/>
+		
+		<h:form>
+			<p:dialog header="Login" widgetVar="dlg" resizable="false">
+		        <h:panelGrid columns="2" cellpadding="5">
+		            <h:outputLabel for="username" value="Username:" />
+		            <p:inputText id="username"  required="true" label="username" />
+		             
+		            <h:outputLabel for="password" value="Password:" />
+		            <p:password id="password"  required="true" label="password" />
+		             
+		            <f:facet name="footer">
+		                <p:commandButton value="Login" update="messages" 
+		                                 oncomplete="handleLoginRequest(xhr, status, args)" />
+		            </f:facet>
+		        </h:panelGrid>
+	    	</p:dialog>
+		</h:form>
+	
+		<header class="animated bounceInDown">
+			<nav>
+			    <div class="row">
+			        <ul class="main-nav">
+			            <li><p:link href="cadastro.xhtml" value="cadastrar-se"/></li>
+			            <li><strong style="color:#518546">|</strong></li>
+			            <li>
+			            	<h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+			            		login
+			            	</h:outputLink>
+    					</li>
+			        </ul>
+			    </div>
+			</nav>
+		</header>
+		
+		<aside class="sidnav animated bounceInLeft">
+			<ul class="side-menu">
+				<h:graphicImage value="/resources/demo/gorro_natal.png" height="50" style="margin:0px 40%;"/>
+				<h2>Pizza Planet</h2>
+				<div class="setores">
+					<ul>
+					    <li>
+					    	<i class="ion-ios-book icon-small"></i>
+					    	<p:link value="cardapio" href="telaPrincipal.xhtml"/>
+					    </li>
+						<li>
+							<i class="ion-ios-cart icon-small"></i>
+							<p:link value="carrinho" href="carrinho.xhtml"/>
+							<p:outputLabel value="#{carrinhoBean.itens}" id="itens"
+						    	style="margin-left:3px;padding:0px 7px;color: #fff;background:#459e00;
+						    	border-radius:70%;font-size:14px"/>
+					   </li>									
+					</ul>					
+				</div>
+			    <!--<p>https://pizzaeciadelivery.podepedir.com.br -> contem os ingredientes</p>-->
+			</ul>
+		</aside>
+		
+		<section class="row section-compras">
+			<div class="content animated bounceInRight">
+				<ui:insert id="conteudo" />
+			</div>	
+		</section>
+		
+		<script type="text/javascript">
+		    function handleLoginRequest(xhr, status, args) {
+		        if(args.validationFailed || !args.loggedIn) {
+		            PF('dlg').jq.effect("shake", {times:5}, 100);
+		        }
+		        else {
+		            PF('dlg').hide();
+		            $('#loginLink').fadeOut();
+		        }
+		    }
+		</script>
+	</h:body>
+</html>

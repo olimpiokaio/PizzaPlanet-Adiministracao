@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Marcas</title>
+	</h:head>
+	<h:body>
+		
+		<p:breadCrumb>
+			<p:menuitem value="home" url="home.xhtml" />
+		    <p:menuitem value="Pizzas" url="cadPizza.xhtml" />
+		    <p:menuitem value="Bebidas" url="cadBebida.xhtml"/>
+		    <p:menuitem value="Categorias" url="cadCategoria.xhtml" />
+		    <p:menuitem value="Marcas" url="cadMarca.xhtml" />
+		    <p:menuitem value="Tipos" url="cadTipo.xhtml" />
+		    <p:menuitem value="Sair" url="#"/>
+		</p:breadCrumb>
+		
+		<p:growl id="message" life="2000" />
+		
+		<p:panel>
+			<h1>Marcas</h1>
+		</p:panel>
+		
+		<h:form id="formMarca">
+			<p:fieldset legend="Nova marca">
+				<p:panelGrid class="ui-noborder">
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Nome" for="nome" />
+						</p:column>
+						<p:column>
+							<p:inputText id="nome" value="#{marcaBean.marca.nome}" required="true" 
+								requiredMessage="Nome obrigratório!" />
+						</p:column>
+						<p:column>
+							<p:message id="msgNome" for="nome"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Imagem:" />
+						</p:column>
+						
+						<p:column>
+							<p:fileUpload id="fileUpload"  mode="advanced" label="Imagem" auto="true"
+								sizeLimit="400000" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+								fileUploadListener="#{marcaBean.upload}" update="foto"/>
+						</p:column>
+						
+						<p:column>
+							<h:graphicImage id="foto" value="#{marcaBean.marca.imagem}" height="150"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column/>
+						<p:column>
+							<p:commandButton value="gravar" action="#{marcaBean.gravar}" async="true" 
+								process="@this @form" update="@all" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:fieldset>
+		</h:form>
+		
+		<h:form id="formTabela">
+			<p:dataTable id="tabelaMarca" value="#{marcaBean.listaMarca}" var="marca" 
+				emptyMessage="Nada encontrado.">	
+				<p:column headerText="ID" sortBy="#{marca.id}">
+					<h:outputLabel value="#{marca.id}" />
+				</p:column>
+				
+				<p:column headerText="Nome" sortBy="#{marca.nome}" filterBy="#{marca.nome}">
+					<h:outputText value="#{marca.nome}" />
+				</p:column>
+				
+				 <p:column headerText="Editar" style="text-align: center;">
+			          <p:commandButton action="#{marcaBean.editar(marca.id)}" value="editar" immediate="true" 
+			          		update="@all" icon="fa fa-fw fa-edit"/>
+			    </p:column>
+			    
+			    <p:column headerText="Remover" style="text-align: center">
+				    <p:commandButton value="Remover" action="#{marcaBean.remover(marca.id)}"
+				    		update="@all" icon="fa fa-fw fa-remove" async="true">
+				        <p:confirm header="Confirmação" message="Os dados serão perdidos!"/>
+				    </p:commandButton>
+				     
+				    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="text-align: center;">
+				        <p:commandButton value="confirmar" type="button" styleClass="ui-confirmdialog-yes" 
+				        	icon="fa fa-fw fa-check" style="text-align: center;background: green;color: #fff"/>
+				        <p:commandButton value="cancelar" type="button" styleClass="ui-confirmdialog-no" 
+				        	icon="fa fa-fw fa-times" style="text-align: center;background: red;color: #fff"/>
+				    </p:confirmDialog>
+			    </p:column>
+			</p:dataTable>
+		</h:form>
+		
+	</h:body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+/*************************/
+@charset "UTF-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* #4C4A48 */
+html, body {
+	/*background-color: #518546;*/
+    color: #518546;
+    /*font-family: 'Lato', 'Arial', sans-serif;*/
+    font-family: 'Poppins', sans-serif;
+	font-weight: 300;
+    font-size: 20px;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+}
+
+/* limpa os carros alegoricos, floats dos filhos da classe */
+.clearfix {zoom: 1}
+.clearfix:after {
+    content: '.';
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+/* ------------------------------------------------------------------------------- */
+/* COMPONENTES REUTILIZAVEIS */
+/* ------------------------------------------------------------------------------- */
+
+.row {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+section {
+    padding: 80px 0;        
+}
+
+.box {
+    padding: 1%;
+}
+
+.box p {
+    font-size: 90%;
+    line-height: 145%;
+}
+
+.ui-widget {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+}
+
+/* ------------------ CABEÇALHOS --------------- */
+
+h1, 
+h2,
+h3 {
+    font-weight: 300;
+    text-transform: uppercase; /* deixa o texto todo em maiusculo */
+}
+
+h1 {
+	text-align: center;
+	padding: 5px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 240%;
+    word-spacing: 4px; /* espaço entre as palavras */
+    letter-spacing: 1px; /* espaço entre as letras */
+    text-shadow: 1px 2px 3px black;
+    background-color: #FEDEAD;
+    color: #518546;
+    border-radius: 50px;
+}
+
+h2 {
+    font-size: 120%;
+    word-spacing: 2px;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 1px; /* espaço entre as letras */
+    color: #FEDEAD;
+    text-shadow: 1px 2px 3px black;
+}
+
+h2:after {
+    display: block;
+    height: 2px;
+    background-color: #FEDEAD;
+    content: "";
+    width: 100px;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+h3 {
+    font-size: 110%;
+    margin-bottom: 15px;
+}
+
+/* ----------------- PARAGRAPHS -------------- */
+.long-copy {
+    line-height: 145%; /* altura de uma linha para a outra*/
+    width: 70%;
+    margin-left: 15%; /* 15% pq ja temos 70% de largura, com isso eu distribui 15 para esquerda, restando 15 para direita tbm*/
+} 
+
+/* ------------------- ICONS ---------------------- */
+
+.icon-big {
+    font-size: 350%;
+    display: block;
+    color: #e67e22;
+    margin-bottom: 10px;
+}
+
+.icon-small {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    color: #518546;
+    font-size: 120%;
+    margin-right: 10px;
+
+    /*sergredo para alinhar texto e icones*/
+    line-height: 120%;
+    vertical-align: middle;
+    margin-top: -5px;
+}
+
+/* ------------------------------------------------------------------------------- */
+/* HEADER */
+/* ------------------------------------------------------------------------------- */
+
+/* #2e3436 */
+nav {
+	box-shadow: 0px 1px 4px #FEDEAD;
+	background-color: #FEDEAD;
+	position: fixed;
+	width: 100%;
+}
+
+.main-nav {
+	float:right;
+	list-style:none;
+	margin:20px 0px;
+}
+
+.main-nav li {
+	display: inline-block;
+	margin-left: 40px;
+}
+
+/* ------------------- LINKS ---------------------- */
+
+/* #e67e22 */
+a {
+    color: #518546;
+    text-decoration: none;
+    /*text-transform: uppercase;*/
+    font-size: 80%;
+    /*font-family: 'Poppins', sans-serif;*/
+}
+
+/* ------------------------------------------------------------------------------- */
+/* SECTION-CONTENT */
+/* ------------------------------------------------------------------------------- */
+
+.content {	
+	margin-left: 200px;
+	padding: 0px 5px;
+}
+
+/* ------------------------------------------------------------------------------- */
+/* SIDNAV */
+/* ------------------------------------------------------------------------------- */
+
+/* Style the side navigation */
+
+/* #2e3436 */
+.sidnav {
+	padding: 10px;
+	height: 100%;
+	width: 200px;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #e67e22;
+	overflow-x: hidden; 
+}
+
+
+/* Side navigation links */
+.side-menu li{
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+  transition: color 0.2s, background-color 0.2s;
+  font-size: 100%;
+  transition: color 0.4s;
+}
+
+/* Change color on hover */
+.side-menu li a:hover {
+  color: #FEDEAD;
+  transition: color 0.2s;
+}
+
+
+div .setores {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #FEDEAD;
+}
+
+/* ------------------------------------------------------------------------------- */
+/* ANIMATIONS */
+/* ------------------------------------------------------------------------------- */
+
+.animated {
+	animation-duration: 1s;
+}

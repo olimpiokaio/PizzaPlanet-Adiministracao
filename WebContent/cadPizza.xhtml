@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	<ui:composition template="_templateCad.xhtml">
+		
+		<ui:insert name="titulo">
+			<h1>Pizza</h1>
+		</ui:insert>
+	
+		<ui:insert name="conteudo">
+			<h:form>
+				<p:fieldset legend="Nova Pizza">
+					<p:panelGrid class="ui-noborder">
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Nome:" for="nome" />
+							</p:column>
+							
+							<p:column>
+								<p:inputText id="nome" value="#{pizzaBean.pizza.nome}" required="true"
+										requiredMessage="O nome da pizza é obrigatório!" 
+										validatorMessage="O nome não pode ser superior a 40 caracteres"
+										style="width:90%;">
+										<f:validateLength maximum="40" />
+										<f:ajax event="blur" render="msgNome messages"/>
+								</p:inputText>
+							</p:column>
+							
+							<p:column>
+								<p:message id="msgNome" for="nome" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Ingredientes:" for="ing"/>	
+							</p:column>
+							
+							<p:column>
+								<p:inputTextarea value="#{pizzaBean.pizza.ingredientes}" id="ing" rows="5" 
+										cols="30"  maxlength="254" autoResize="false" style="width:90%;"/>
+							</p:column>
+							
+							<p:column>
+								<p:message id="msgIng" for="ing" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Tipo:" for="tipo" />
+							</p:column>
+							
+							<p:column>
+								<p:selectOneMenu value="#{pizzaBean.idTipo}" id="tipo" required="true" requiredMessage="Escolha um tipo para a pizza!" style="width:90%;">
+									<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+									<f:selectItems value="#{pizzaBean.listaTipo}" var="tipo"
+										itemValue="#{tipo.id}" itemLabel="#{tipo.caracteristica}"/>
+									<f:ajax event="blur" render="msgTipo messages" />	
+								</p:selectOneMenu>
+							</p:column>
+							
+							<p:column>
+								<p:message id="msgTipo" for="tipo" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Preço:" for="preco" />						
+							</p:column>
+							
+							<p:column>
+								<p:inputNumber id="preco" value="#{pizzaBean.pizza.preco}" style="width:90%;" symbol=" R$" symbolPosition="s" decimalSeparator=","
+		                               thousandSeparator="." required="true" requiredMessage="Preço da pizza é obrigatório!" />  
+							</p:column>
+							
+							<p:column>
+								<p:message id="msgPreco" for="preco" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Imagem:" />
+							</p:column>
+							
+							<p:column>
+								<p:fileUpload id="fileUpload"  mode="advanced" label="Imagem" auto="true"
+									sizeLimit="400000" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+									fileUploadListener="#{pizzaBean.upload}" update="foto"/>
+							</p:column>
+							
+							<p:column>
+								<h:graphicImage id="foto" value="#{pizzaBean.pizza.imagem}" height="150"/>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column />
+							<p:column>
+								<p:commandButton value="Gravar" action="#{pizzaBean.gravar}"
+										process="@form" update="@all"/>
+								<h:outputText />							
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:fieldset>
+			</h:form>
+			
+			<h:form>
+		        <p:dataTable id="tabelaPizza" value="#{pizzaBean.listaPizza}" var="pizza" 
+		        		paginator="true" rows="5" emptyMessage="Nada encontrado.">
+				    <p:column headerText="Nome" sortBy="#{pizza.nome}" filterBy="#{pizza.nome}" filterMatchMode="startsWith">
+				        <h:outputText value="#{pizza.nome}" />
+				    </p:column>
+				    
+				    <p:column headerText="Ingredientes">
+				        <h:outputText value="#{pizza.ingredientes}" />
+				    </p:column>
+				 
+				    <p:column headerText="Preço" sortBy="#{pizza.preco}" filterBy="#{pizza.preco}" filterMatchMode="startsWith">
+				        <h:outputText value="#{pizza.preco}">
+				        	<f:convertNumber type="currency" pattern="R$ #0.00" locale="pt_BR"/>
+				        </h:outputText>
+				    </p:column>
+				 
+				    <p:column headerText="Tipo">
+				        <h:outputText value="#{pizza.tipo.caracteristica}" />
+				    </p:column>
+				    
+				    <p:column headerText="Atualizar">
+				        <p:commandButton value="atualizar" action="#{pizzaBean.editarPizza(pizza.id)}" icon="fa fa-fw fa-edit" 
+				        	update="@all" immediate="true"/>
+				    </p:column>
+				    
+				    <p:column headerText="Remover">
+				        <p:commandButton value="Remover" action="#{pizzaBean.removerPizza(pizza.id)}" 
+				        	icon="fa fa-fw fa-remove" update="@all" immediate="true" async="true">
+				        	<p:confirm header="Confirmação" message="Os dados serão perdidos!"/>
+				        </p:commandButton>	
+				        
+				        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="text-align: center">
+				        	<p:commandButton value="confirmar" type="button" styleClass="ui-confirmdialog-yes" 
+					        	icon="fa fa-fw fa-check" style="text-align: center;background: green;color: #fff"/>
+					        <p:commandButton value="cancelar" type="button" styleClass="ui-confirmdialog-no" 
+					        	icon="fa fa-fw fa-times" style="text-align: center;background: red;color: #fff"/>
+				        </p:confirmDialog>
+				    </p:column>
+				</p:dataTable>
+			</h:form>
+			
+		</ui:insert>
+	</ui:composition>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

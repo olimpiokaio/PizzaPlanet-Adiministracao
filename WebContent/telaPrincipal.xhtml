@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:composition template="_templateP.xhtml">
+		<ui:insert name="conteudo">
+			<div>
+				<h1>Cardapio</h1>
+			</div>
+			<!-- opções de pizzas salgadas -->
+  			<h:form>
+	  			<p:carousel value="#{cardapioBean.listaPizzaSalgado}" var="pizza" headerText="Salgadas" itemStyle="text-align:center"
+	  				responsive="true" style="border:none;background:#fa9c55e5">
+			        <p:panelGrid columns="1" style="width:100%;margin-top:10px;background:rgba(0,0,0,0)"
+			        	columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+			            <f:facet name="header">
+			            	 <p:rating disabled="true" />
+			                <h:graphicImage value="#{pizza.imagem}" alt="pizza-pizza-planete" height="150"/>
+			            </f:facet>
+			 
+			            <p:outputLabel value="#{pizza.nome}" />
+			 
+			            <p:outputLabel value="#{pizza.preco}" >
+			            	<f:convertNumber type="currency" pattern="R$ #0.00" locale="pt_BR" />
+			            </p:outputLabel>
+			        </p:panelGrid>
+			        
+			        <p:commandButton value="ver mais" action="#{cardapioBean.selecionaPizza(pizza.id)}"
+		        	 	process="@this" immediate="true" update=":formularioDetalheSalgado" style="width:100%; background: #e67e22">
+		        	</p:commandButton>
+			    </p:carousel>
+			</h:form>
+			<h:form id="formularioDetalheSalgado">
+		   		 <div style="width:100%;">
+		        	<p:panel rendered="#{cardapioBean.pizzaEscolhaSalgado.nome != null}" style="margin-bottom:20px;">
+		        	
+			        	<div class="ui-g descricao">
+						    <div class="ui-g-2">
+						    	Sabor
+						    </div>
+						    
+						    <div class="ui-g-2">
+						    	Preço
+						    </div>
+						    
+						    <div class="ui-g-2">
+						    	Quantidade
+						    </div>
+						    
+						    <div class="ui-g-6">
+						    	<p:outputLabel value="Subtotal (#{cardapioBean.getQuantidadePizza(cardapioBean.pizzaEscolhaSalgado)} itens): " 
+						    		id="menu" style="padding-left:10px" />
+						    	<p:outputLabel id="subtotal" value="#{cardapioBean.getSubtotal(cardapioBean.pizzaEscolhaSalgado)}" style="color:#B12704;">
+						    		<f:convertNumber type="currency" pattern="R$ #0.00" locale="pt_BR" />
+						    	</p:outputLabel>
+						    </div>
+			        	</div>
+			        	
+			        	<div class="ui-g descricao" style="color:#433f38;">
+						    <div class="ui-g-2">
+						    	<p:outputLabel id="nome2" value="#{cardapioBean.pizzaEscolhaSalgado.nome}" />
+						    </div>
+						    
+						    <div class="ui-g-2" style="color:#433f38;">
+						    	<p:outputLabel value="#{cardapioBean.pizzaEscolhaSalgado.preco}"
+						    		rendered="#{cardapioBean.pizzaEscolhaSalgado.nome != null}">
+						    		<f:convertNumber type="currency" pattern="R$ #0.00" locale="pt_BR" />
+						    	</p:outputLabel>
+						    </div>
+						    
+						    <div class="ui-g-2">
+						    	<p:outputPanel>
+							       <p:selectOneMenu value="#{cardapioBean.atributosSalgado.quantidade}" style="width:50px" 
+							       		required="true" >
+							       		<p:ajax update="@this menu subtotal" process="@this" />
+		
+							            <f:selectItem itemLabel="1" itemValue="1" />
+							            <f:selectItem itemLabel="2" itemValue="2" />
+							            <f:selectItem itemLabel="3" itemValue="3" />
+							            <f:selectItem itemLabel="4" itemValue="4" />
+							            <f:selectItem itemLabel="5" itemValue="5" />
+							            <f:selectItem itemLabel="6" itemValue="6" />
+							            <f:selectItem itemLabel="7" itemValue="7" />
+							            <f:selectItem itemLabel="8" itemValue="8" />
+							            <f:selectItem itemLabel="9" itemValue="9" />
+							            <f:selectItem itemLabel="10" itemValue="10" />
+							        </p:selectOneMenu>
+							   </p:outputPanel>
+						    </div>
+						    
+						    <div class="ui-g-6">
+						    	<p:commandButton value="adicionar ao carrinho"
+							    	action="#{carrinhoBean.adicionaPizza(cardapioBean.pizzaEscolhaSalgado.id, 
+							    	cardapioBean.atributosSalgado.quantidade)}" 
+							    	update="itens"/>
+						    </div>
+			        	</div>
+			        	
+			        	<div class="ui-g descricao">
+						    <div class="ui-g-6">
+						    	<h:graphicImage value="#{cardapioBean.pizzaEscolhaSalgado.imagem}" alt="pizza-pizza-planet" height="300"/> 
+						    </div>
+						    <div class="ui-g-6" style="vertical-align:bottom;margin-top:50px;color:#433f38;">
+						    	<h2 style="text-shadow:none;color:#518546">Ingredientes</h2> 
+							    <h:outputText value="#{cardapioBean.pizzaEscolhaSalgado.ingredientes}" />
+						    </div>
+						</div>
+			        	
+			        	<div class="ui-g descricao">
+						    <div class="ui-g-12" style="color:#433f38;">
+						    	sua avaliação:
+							    <h:outputText value="#{cardapioBean.pizzaEscolhaSalgado.nome}" />
+		        				<p:rating value="#{cardapioBean.atributosSalgado.avaliacao}" />
+						    </div>
+						</div>
+		        	</p:panel>
+		        </div>
+		   	</h:form>
+		   	
+		   	<!-- opções de pizzas doces -->
+  			<h:form>
+	  			<p:carousel value="#{cardapioBean.listaPizzaDoce}" var="pizza" headerText="Doces" itemStyle="text-align:center"
+	  				responsive="true" style="border:none;background:#fa9c55e5;">
+			        <p:panelGrid columns="1" style="width:100%;margin-top:10px;background:rgba(0,0,0,0)"
+			        	columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+			            <f:facet name="header">
+			            	 <p:rating disabled="true" />
+			                <h:graphicImage value="#{pizza.imagem}" alt="pizza-pizza-planete" height="150"/>
+			            </f:facet>
+			 
+			            <p:outputLabel value="#{pizza.nome}" />
+			 
+			            <p:outputLabel value="#{pizza.preco}" >
+			            	<f:convertNumber type="currency" pattern="R$ #0.00" locale="pt_BR" />
+			            </p:outputLabel>
+			        </p:panelGrid>
+			        
+			        <p:commandButton value="ver mais" action="#{cardapioBean.selecionaPizza(pizza.id)}"
+		        	 	process="@this" immediate="true" update=":formularioDetalheDoce" style="width:100%; background: #e67e22">
+		        	</p:commandButton>
+			    </p:carousel>
+			</h:form>
+			<h:form id="formularioDetalheDoce">
+		   		 <div style="width:100%;">
+		        	<p:panel rendered="#{cardapioBean.pizzaEscolhaDoce.nome != null}" style="margin-bottom:20px;">
+		        	
+			        	<div class="ui-g descricao">
+						    <div class="ui-g-2">
+						    	Sabor
+						    </div>
+						    
+						    <div class="ui-g-2">
+						    	Preço
+						    </div>
+						    
+						    <div class="ui-g-2">
+						    	Quantidade
+						    </div>
+						    
+						    <div class="ui-g-6">
+						    	<p:outputLabel value="Subtotal (#{cardapioBean.getQuantidadePizza(cardapioBean.pizzaEscolhaDoce)} itens): " 
+						    		id="menu" style="padding-left:10px" />
+						    	<p:outputLabel id="subtotal" value="#{cardapioBean.getSubtotal(cardapioBean.pizzaEscolhaDoce)}" style="color:#B12704;">
+						    		<f:convertNumber type="currency" pattern="R$ #0.00" locale="pt_BR" />
+						    	</p:outputLabel>
+						    </div>
+			        	</div>
+			        	
+			        	<div class="ui-g descricao" style="color:#433f38;">
+						    <div class="ui-g-2">
+						    	<p:outputLabel id="nome2" value="#{cardapioBean.pizzaEscolhaDoce.nome}" />
+						    </div>
+						    
+						    <div class="ui-g-2" style="color:#433f38;">
+						    	<p:outputLabel value="#{cardapioBean.pizzaEscolhaDoce.preco}"
+						    		rendered="#{cardapioBean.pizzaEscolhaDoce.nome != null}">
+						    		<f:convertNumber type="currency" pattern="R$ #0.00" locale="pt_BR" />
+						    	</p:outputLabel>
+						    </div>
+						    
+						    <div class="ui-g-2">
+						    	<p:outputPanel>
+							       <p:selectOneMenu value="#{cardapioBean.atributosDoce.quantidade}" style="width:50px" 
+							       		required="true" >
+							       		<p:ajax update="@this menu subtotal" process="@this" />
+		
+							            <f:selectItem itemLabel="1" itemValue="1" />
+							            <f:selectItem itemLabel="2" itemValue="2" />
+							            <f:selectItem itemLabel="3" itemValue="3" />
+							            <f:selectItem itemLabel="4" itemValue="4" />
+							            <f:selectItem itemLabel="5" itemValue="5" />
+							            <f:selectItem itemLabel="6" itemValue="6" />
+							            <f:selectItem itemLabel="7" itemValue="7" />
+							            <f:selectItem itemLabel="8" itemValue="8" />
+							            <f:selectItem itemLabel="9" itemValue="9" />
+							            <f:selectItem itemLabel="10" itemValue="10" />
+							        </p:selectOneMenu>
+							   </p:outputPanel>
+						    </div>
+						    
+						    <div class="ui-g-6">
+						    	<p:commandButton value="adicionar ao carrinho"
+							    	action="#{carrinhoBean.adicionaPizza(cardapioBean.pizzaEscolhaDoce.id, 
+							    	cardapioBean.atributosDoce.quantidade)}" 
+							    	update="itens"/>
+						    </div>
+			        	</div>
+			        	
+			        	<div class="ui-g descricao">
+						    <div class="ui-g-6">
+						    	<h:graphicImage value="#{cardapioBean.pizzaEscolhaDoce.imagem}" alt="pizza-pizza-planet" height="300"/> 
+						    </div>
+						    <div class="ui-g-6" style="vertical-align:bottom;margin-top:50px;color:#433f38;">
+						    	<h2 style="text-shadow:none;color:#518546">Ingredientes</h2> 
+							    <h:outputText value="#{cardapioBean.pizzaEscolhaDoce.ingredientes}" />
+						    </div>
+						</div>
+			        	
+			        	<div class="ui-g descricao">
+						    <div class="ui-g-12" style="color:#433f38;">
+						    	sua avaliação:
+							    <h:outputText value="#{cardapioBean.pizzaEscolhaDoce.nome}" />
+		        				<p:rating value="#{cardapioBean.atributosDoce.avaliacao}" />
+						    </div>
+						</div>
+		        	</p:panel>
+		        </div>
+		   	</h:form>
+		   	
+		   	<!-- opções de bebidas -->
+		   	<h:form>
+	  			<p:carousel value="#{cardapioBean.listaBebida}" var="bebida" headerText="Bebidas" itemStyle="text-align:center"
+	  				responsive="true" style="border:none;background:#fa9c55e5;">
+			        <p:panelGrid columns="1" style="width:100%;margin-top:10px;background:#fff;"
+			        	columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+			            <f:facet name="header">
+			            	 <p:rating disabled="true" />
+			                <h:graphicImage value="#{bebida.imagem}" alt="#{bebida.nome}" height="150"/>
+			            </f:facet>
+			 
+			            <p:outputLabel value="#{bebida.nome}" />
+			 
+			            <p:outputLabel value="#{bebida.preco}" >
+			            	<f:convertNumber type="currency" pattern="R$ #0.00" locale="pt_BR" />
+			            </p:outputLabel>
+			        </p:panelGrid>
+			        <p:commandButton value="ver mais" action="#{cardapioBean.selecionaBebida(bebida.id)}"
+		        	 	process="@this" immediate="true" update=":formularioDetalheBebida" style="width:100%; background: #e67e22">
+		        	</p:commandButton>
+			    </p:carousel>
+			</h:form>
+			<h:form id="formularioDetalheBebida" >
+		   		 <div style="width:100%;">
+		        	<p:panel rendered="#{cardapioBean.bebidaEscolha.nome != null}" style="margin-bottom:20px;">
+		        	
+			        	<div class="ui-g descricao">
+						    <div class="ui-g-2">
+						    	Sabor
+						    </div>
+						    
+						    <div class="ui-g-2">
+						    	Preço
+						    </div>
+						    
+						    <div class="ui-g-2">
+						    	Quantidade
+						    </div>
+						    
+						    <div class="ui-g-6">
+						    	<p:outputLabel value="Subtotal (#{cardapioBean.getQuantidadeBebida(cardapioBean.bebidaEscolha)} itens): " 
+						    		id="menu" style="padding-left:10px" />
+						    	<p:outputLabel id="subtotal" value="#{cardapioBean.getSubtotalBebida(cardapioBean.bebidaEscolha)}" style="color:#B12704;">
+						    		<f:convertNumber type="currency" pattern="R$ #0.00" locale="pt_BR" />
+						    	</p:outputLabel>
+						    </div>
+			        	</div>
+			        	
+			        	<div class="ui-g descricao" style="color:#433f38;">
+						    <div class="ui-g-2">
+						    	<p:outputLabel id="nome2" value="#{cardapioBean.bebidaEscolha.nome}" />
+						    </div>
+						    
+						    <div class="ui-g-2" style="color:#433f38;">
+						    	<p:outputLabel value="#{cardapioBean.bebidaEscolha.preco}"
+						    		rendered="#{cardapioBean.bebidaEscolha.nome != null}">
+						    		<f:convertNumber type="currency" pattern="R$ #0.00" locale="pt_BR" />
+						    	</p:outputLabel>
+						    </div>
+						    
+						    <div class="ui-g-2">
+						    	<p:outputPanel>
+							       <p:selectOneMenu value="#{cardapioBean.atributosBebida.quantidade}" style="width:50px"
+							       		required="true" >
+							       		<p:ajax update="@this menu subtotal" process="@this" />
+		
+							            <f:selectItem itemLabel="1" itemValue="1" />
+							            <f:selectItem itemLabel="2" itemValue="2" />
+							            <f:selectItem itemLabel="3" itemValue="3" />
+							            <f:selectItem itemLabel="4" itemValue="4" />
+							            <f:selectItem itemLabel="5" itemValue="5" />
+							            <f:selectItem itemLabel="6" itemValue="6" />
+							            <f:selectItem itemLabel="7" itemValue="7" />
+							            <f:selectItem itemLabel="8" itemValue="8" />
+							            <f:selectItem itemLabel="9" itemValue="9" />
+							            <f:selectItem itemLabel="10" itemValue="10" />
+							        </p:selectOneMenu>
+							   </p:outputPanel>
+						    </div>
+						    
+						    <div class="ui-g-6">
+						    	<p:commandButton value="adicionar ao carrinho"
+							    	action="#{carrinhoBean.adicionaBebida(cardapioBean.bebidaEscolha.id,
+							    	cardapioBean.atributosBebida.quantidade)}"
+							    	update="itens"/>
+						    </div>
+			        	</div>
+			        	
+			        	<div class="ui-g descricao">
+						    <div class="ui-g-6">
+						    	<h:graphicImage value="#{cardapioBean.bebidaEscolha.imagem}" alt="pizza-pizza-planet" height="300"/> 
+						    </div>
+						    <div class="ui-g-6" style="vertical-align:bottom;margin-top:50px;color:#433f38;">
+						    	<h2 style="text-shadow:none;color:#518546">Descrição</h2>
+						    	<h:graphicImage value="#{cardapioBean.bebidaEscolha.marca.imagem}" alt="#{cardapioBean.bebidaEscolha.nome}" height="150"/>
+							    <br/>
+							    <h:outputText value="#{cardapioBean.bebidaEscolha.marca.nome}" />
+							    <span> / </span>
+							    <h:outputText value="#{cardapioBean.bebidaEscolha.tipo.caracteristica}" />
+						    </div>
+						</div>
+			        	
+			        	<div class="ui-g descricao">
+						    <div class="ui-g-12" style="color:#433f38;">
+						    	sua avaliação:
+							    <h:outputText value="#{cardapioBean.bebidaEscolha.nome}" />
+		        				<p:rating value="#{cardapioBean.atributosBebida.avaliacao}" />
+						    </div>
+						</div>
+		        	</p:panel>
+		        </div>
+		   	</h:form>
+		</ui:insert>
+	</ui:composition>
+</html>

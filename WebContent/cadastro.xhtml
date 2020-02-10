@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:composition template="_templateP.xhtml">
+		
+		<ui:insert name="conteudo">
+			<div>
+				<h1>Cadastre-se</h1>
+			</div>
+			
+			<h:form>
+			    <p:growl id="growl" sticky="true" showDetail="true"/>
+			 
+			    <p:wizard nextLabel="Próximo" backLabel="Voltar">
+			        <p:tab id="personal" title="Pessoa">
+			            <p:panel header="Detalhes Da Pessoa">
+			                <p:messages />
+			                <h:panelGrid columns="2" columnClasses="label, value">
+			                    <p:outputLabel value="Primeiro Nome " for="pNome" />
+			                    <p:inputText value="#{pessoaBean.pessoa.primeiroNome}" id="pNome" required="true" label="primeiro nome" 
+			                    	maxlength="255" requiredMessage="Informe seu primeiro nome!"/>
+			 
+			                    <p:outputLabel value="Utimo Nome: " for="uNome"/>
+			                    <p:inputText value="#{pessoaBean.pessoa.utimoNome}" id="uNome" required="true" label="utimo nome"
+			                    	maxlength="255" requiredMessage="Informe seu utimo nome!"/>
+			 
+			                    <p:outputLabel value="Idade: " for="idade" />
+			                    <p:inputNumber value="#{pessoaBean.pessoa.idade}" id="idade" minValue="1" maxValue="200" required="true" 
+			                    	requiredMessage="Informe sua idade!" validatorMessage="deve ser um número formado por um ou mais dígitos."/>
+			                </h:panelGrid>
+			            </p:panel>
+			        </p:tab>
+			 
+			        <p:tab id="address" title="Endereço">
+			            <p:panel header="Detalhes Do Endereço">
+			                <p:messages />
+			                <h:panelGrid columns="2" columnClasses="label, value">
+			                    <p:outputLabel value="Rua: " for="rua"/>
+			                    <p:inputText value="#{pessoaBean.pessoa.rua}" id="rua" required="true" maxlength="255" 
+			                    	requiredMessage="Informe sua rua!"/>
+			 
+			                    <p:outputLabel value="Numero Da Casa: " for="numero"/>
+			                    <p:inputText value="#{pessoaBean.pessoa.numeroCasa}" id="numero" required="true" maxlength="255"
+			                    	requiredMessage="Informe o numero da casa!"/>
+			 
+			                    <p:outputLabel value="Cidade: " for="cidade"/>
+			                    <p:inputText value="#{pessoaBean.pessoa.cidade}" id="cidade" required="true" maxlength="255" 
+			                    	requiredMessage="Informe sua cidade!"/>
+			 
+			                </h:panelGrid>
+			            </p:panel>
+			        </p:tab>
+			 
+			        <p:tab id="contact" title="Conta">
+			            <p:panel header="Informações De Contato">
+			                <p:messages />
+			                <h:panelGrid columns="2" columnClasses="label, value">
+			                    <p:outputLabel value="Telefone: " for="telefone"/>
+			                    <p:inputMask value="#{pessoaBean.pessoa.telefone}" id="telefone" mask="(99) 9999-9999" required="true"/>
+			 
+			                    <p:outputLabel value="Email: " for="email" />
+			                    <p:inputText value="#{pessoaBean.pessoa.email}" id="email" required="true" maxlength="255" 
+			                    	requiredMessage="Informe um email valido!">
+			                    	<f:attribute name="type" value="email" />
+			                    </p:inputText>
+			                    	
+			                                     
+					        	<h:outputLabel for="pwd1" value="Senha : " />
+						        <p:password id="pwd1" value="#{pessoaBean.pessoa.senha}" match="pwd2" label="Password 1" required="true" 
+						        	placeholder="Informe sua senha" requiredMessage="Informe uma senha!" 
+						        	validatorMessage="Errou ao validar senha"/>
+						 
+						        <h:outputLabel for="pwd2" value="Confirmar Senha: *" />
+						        <p:password id="pwd2" value="#{pessoaBean.pessoa.senha}" label="Password 2" required="true" 
+						        	placeholder="Confirme sua senha" requiredMessage="Informe uma senha!"
+						        	validatorMessage="Errou ao validar senha"/>
+							   
+			                </h:panelGrid>
+			            </p:panel>
+			        </p:tab>
+			 
+			        <p:tab id="confirm" title="Confirmarção">
+			            <p:panel header="Confirmation">
+			                <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+			                    <h:panelGrid columns="2" columnClasses="label, value">
+			                        <p:outputLabel value="Primeiro nome " />
+			                        <p:outputLabel value="#{pessoaBean.pessoa.primeiroNome}" styleClass="outputLabel"/>
+			 
+			                        <p:outputLabel value="Utimo nome: " />
+			                        <p:outputLabel value="#{pessoaBean.pessoa.utimoNome}" styleClass="outputLabel"/>
+			 
+			                        <p:outputLabel value="Idade: " />
+			                        <p:outputLabel value="#{pessoaBean.pessoa.idade}" styleClass="outputLabel"/>
+			                    </h:panelGrid>
+			 
+			                    <h:panelGrid columns="2" columnClasses="label, value">
+			                        <p:outputLabel value="Rua: " />
+			                        <p:outputLabel value="#{pessoaBean.pessoa.rua}" styleClass="outputLabel"/>
+			 
+			                        <p:outputLabel value="Numero: " />
+			                        <p:outputLabel value="#{pessoaBean.pessoa.numeroCasa}" styleClass="outputLabel"/>
+			 
+			                        <p:outputLabel value="Cidade: " />
+			                        <p:outputLabel value="#{pessoaBean.pessoa.cidade}" styleClass="outputLabel"/>
+			                    </h:panelGrid>
+			 
+			                    <h:panelGrid columns="2" columnClasses="label, value">
+			                        <p:outputLabel value="Email: " />
+			                        <p:outputLabel value="#{pessoaBean.pessoa.email}" styleClass="outputLabel"/>
+			 
+			                        <p:outputLabel value="Telefone: " />
+			                        <p:outputLabel value="#{pessoaBean.pessoa.telefone}" styleClass="outputLabel" mask="(99) 9999-9999"/>
+			 
+			                        <p:outputLabel />
+			                        <p:outputLabel />
+			                    </h:panelGrid>
+			                </h:panelGrid>
+			 
+			                <p:commandButton value="Enviar" action="#{pessoaBean.gravar}" update="growl" process="@this"/>
+			            </p:panel>
+			        </p:tab>
+			    </p:wizard>
+			 
+			</h:form>
+		</ui:insert>
+
+	</ui:composition>
+</html>
+
+
+
+
+
+
+ 
+ 
